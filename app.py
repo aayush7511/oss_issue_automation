@@ -13,6 +13,8 @@ app = Flask(__name__)
 def health():
     return "ok", 200
 
+app.run(host="0.0.0.0", port=5000, debug=False, use_reloader=False)
+
 def formatTextForRichText(text):
     arr = []
     prev = 0
