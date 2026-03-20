@@ -9,6 +9,9 @@ import threading
 
 app = Flask(__name__)
 
+@app.route("/health")
+def health():
+    return "ok", 200
 
 def formatTextForRichText(text):
     arr = []
