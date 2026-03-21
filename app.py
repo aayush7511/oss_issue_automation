@@ -27,7 +27,7 @@ def getOpenGoodFirstIssues(repos: list):
         return
 
     headers = {
-        'Authorization': os.environ.get("GITHUB_TOKEN"),
+        'Authorization': f'token {os.environ.get("GITHUB_TOKEN")}',
         'X-GitHub-Api-Version': '2026-03-10'
         }
     issues = []
@@ -40,7 +40,7 @@ def getOpenGoodFirstIssues(repos: list):
         
         if(r.status_code != 200):
             print({"message": 'error', "status": r.status_code})
-            print(f"Could not find issues for {repo} repository")
+            print(r.json())
             continue
             
         repo_issues = []
