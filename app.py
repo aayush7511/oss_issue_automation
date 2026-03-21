@@ -69,6 +69,10 @@ def getOpenGoodFirstIssues(repos: list):
         
         
 def addIssuesToNotion(issues):
+    if(not bool(os.environ.get("NOTION_TOKEN"))):
+        print("Notion token not present")
+        return
+    
     data_source_id = '3292490d-d1cd-806d-9ec7-000b97004545'
     pages_url = "https://api.notion.com/v1/pages"
     page_retreival_url = f"https://api.notion.com/v1/data_sources/{data_source_id}/query"
