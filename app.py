@@ -69,7 +69,6 @@ def getOpenGoodFirstIssues(repos: list):
 def addIssuesToNotion(issues):
     data_source_id = '3292490d-d1cd-806d-9ec7-000b97004545'
     pages_url = "https://api.notion.com/v1/pages"
-    datasource_url = f"https://api.notion.com/v1/data_sources/{data_source_id}"
     page_retreival_url = f"https://api.notion.com/v1/data_sources/{data_source_id}/query"
     
     
@@ -179,17 +178,70 @@ def addIssuesToNotion(issues):
     
 def searchAndInsert():
     issues = getOpenGoodFirstIssues([
-        {'owner': 'vllm-project', 'name': 'vllm'},
-        {'owner': 'vllm-project', 'name': 'llm-compressor'},
-        {'owner': 'huggingface', 'name': 'trl'},
-        {'owner': 'huggingface', 'name': 'accelerate'},
-        {'owner': 'huggingface', 'name': 'transformers'},
-        {'owner': 'huggingface', 'name': 'peft'},
-        {'owner': 'deepspeedai', 'name': 'DeepSpeed'},
-    ])
+    # Data
+    {'owner': 'huggingface', 'name': 'datasets'},
+    {'owner': 'argilla-io', 'name': 'argilla'},
+    {'owner': 'snorkelai', 'name': 'snorkel'},
+    {'owner': 'infiniflow', 'name': 'ragflow'},
+
+    # Training & fine-tuning
+    {'owner': 'huggingface', 'name': 'transformers'},
+    {'owner': 'huggingface', 'name': 'trl'},
+    {'owner': 'huggingface', 'name': 'peft'},
+    {'owner': 'hiyouga', 'name': 'LLaMA-Factory'},
+
+    # Distributed training & infra
+    {'owner': 'deepspeedai', 'name': 'DeepSpeed'},
+    {'owner': 'huggingface', 'name': 'accelerate'},
+    {'owner': 'ray-project', 'name': 'ray'},
+    {'owner': 'unslothai', 'name': 'unsloth'},
+
+    # Compression & optimization
+    {'owner': 'vllm-project', 'name': 'llm-compressor'},
+    {'owner': 'Lightning-AI', 'name': 'litgpt'},
+    {'owner': 'ggerganov', 'name': 'llama.cpp'},
+
+    # Vector DBs & retrieval
+    {'owner': 'chroma-core', 'name': 'chroma'},
+    {'owner': 'qdrant', 'name': 'qdrant'},
+    {'owner': 'mem0ai', 'name': 'mem0'},
+    {'owner': 'getzep', 'name': 'zep'},
+
+    # Serving & inference
+    {'owner': 'vllm-project', 'name': 'vllm'},
+    {'owner': 'sgl-project', 'name': 'sglang'},
+    {'owner': 'ollama', 'name': 'ollama'},
+    {'owner': 'BerriAI', 'name': 'litellm'},
+
+    # Evals & observability
+    {'owner': 'EleutherAI', 'name': 'lm-evaluation-harness'},
+    {'owner': 'mlflow', 'name': 'mlflow'},
+    {'owner': 'openai', 'name': 'evals'},
+
+    # Agentic frameworks
+    {'owner': 'langchain-ai', 'name': 'langchain'},
+    {'owner': 'langchain-ai', 'name': 'langgraph'},
+    {'owner': 'microsoft', 'name': 'autogen'},
+    {'owner': 'crewAIInc', 'name': 'crewAI'},
+    {'owner': 'huggingface', 'name': 'smolagents'},
+    {'owner': 'pydantic', 'name': 'pydantic-ai'},
+    {'owner': 'microsoft', 'name': 'semantic-kernel'},
+
+    # Agentic coding
+    {'owner': 'All-Hands-AI', 'name': 'OpenHands'},
+    {'owner': 'cline', 'name': 'cline'},
+    {'owner': 'aider-chat', 'name': 'aider'},
+    {'owner': 'mastra-ai', 'name': 'mastra'},
+
+    # SDKs & protocols
+    {'owner': 'openai', 'name': 'openai-python'},
+    {'owner': 'modelcontextprotocol', 'name': 'python-sdk'},
+    {'owner': 'modelcontextprotocol', 'name': 'typescript-sdk'},
+])
     
     addIssuesToNotion(issues)    
 
+searchAndInsert()
 schedule.every().hour.do(searchAndInsert)
 
 def run_scheduler():
@@ -202,4 +254,4 @@ if __name__ == "__main__":
     thread = threading.Thread(target=run_scheduler)
     thread.daemon = True
     thread.start()
-    app.run(debug=True, use_reloader=False)
+    app.run(debug=False, use_reloader=False)
