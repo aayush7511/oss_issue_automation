@@ -5,9 +5,12 @@ import requests
 import schedule
 import time
 import threading
+from dotenv import load_dotenv
+
 
 
 app = Flask(__name__)
+load_dotenv()
 
 @app.route("/health")
 def health():
@@ -19,6 +22,10 @@ def formatTextForRichText(text):
     return [{"text": {"content": text[i:i+2000]}} for i in range(0, len(text), 2000)]
 
 def getOpenGoodFirstIssues(repos: list):
+    if(not bool(os.environ.get("GITHUB_TOKEN"))):
+        print("Github token not present")
+        return
+
     headers = {
         'Authorization': os.environ.get("GITHUB_TOKEN"),
         'X-GitHub-Api-Version': '2026-03-10'
@@ -29,9 +36,15 @@ def getOpenGoodFirstIssues(repos: list):
   
         r = requests.get(f"https://api.github.com/repos/{repo['owner']}/{repo['name']}/issues", params=payload, headers=headers)
         issues_arr = r.json()
+        
+        
+        if(r.status_code != 200):
+            print({"message": 'error', "status": r.status_code})
+            print(f"Could not find issues for {repo} repository")
+            continue
+            
         repo_issues = []
         for i in issues_arr:
-            
             repo_issues.append(
                 {
                     'node_id': i["node_id"],
@@ -63,7 +76,7 @@ def addIssuesToNotion(issues):
     
     headers = {
         "Notion-Version": "2026-03-11",
-        "Authorization": os.environ.get("NOTION_TOKEN"),
+        "Authorization": f"{os.environ.get("NOTION_TOKEN")}",
         "Content-Type": "application/json"
     }
     
@@ -91,6 +104,7 @@ def addIssuesToNotion(issues):
 
         response = requests.post(page_retreival_url, json=retrieve_db_entries, headers=headers)
         resp_arr = response.json()
+       
         
         
         
