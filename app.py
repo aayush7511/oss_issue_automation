@@ -76,7 +76,7 @@ def addIssuesToNotion(issues):
     
     headers = {
         "Notion-Version": "2026-03-11",
-        "Authorization": f"{os.environ.get("NOTION_TOKEN")}",
+        "Authorization": f"Bearer {os.environ.get("NOTION_TOKEN")}",
         "Content-Type": "application/json"
     }
     
