@@ -13,21 +13,10 @@ app = Flask(__name__)
 def health():
     return "ok", 200
 
-app.run(host="0.0.0.0", port=5000, debug=False, use_reloader=False)
-
 def formatTextForRichText(text):
-    arr = []
-    prev = 0
-    for i in range(0, len(text), 1999):
-        arr.append(
-            {
-                "text": {
-                    "content": f"{text[i:i+2000]}",
-                    }
-            }
-        )
-
-    return arr
+    if not text:
+        return [{"text": {"content": ""}}]
+    return [{"text": {"content": text[i:i+2000]}} for i in range(0, len(text), 2000)]
 
 def getOpenGoodFirstIssues(repos: list):
     headers = {
@@ -254,4 +243,4 @@ if __name__ == "__main__":
     thread = threading.Thread(target=run_scheduler)
     thread.daemon = True
     thread.start()
-    app.run(debug=False, use_reloader=False)
+    app.run(host="0.0.0.0", port=5000, debug=False, use_reloader=False)
